@@ -11,10 +11,15 @@ import Education from "@/app/_components/Education";
 import Expertise from "@/app/_components/Expertise";
 import Languages from "@/app/_components/Languages";
 import Info from "@/app/_components/Info";
-
+import { useDispatch, useSelector } from "react-redux";
+import { updateThemeColor } from "@/app/_context/resumeSlice";
 
 export default function Page() {
-  const [color, setColor] = useState("#373d4c");
+  const color = useSelector((state: any) => state.resume.themeColor);
+  const dispatch = useDispatch();
+  const setColor = (color: string) => {
+    dispatch(updateThemeColor(color));
+  };
 
   return (
     <div className="py-5 px-10 h-full gap-5 flex justify-center items-center">
