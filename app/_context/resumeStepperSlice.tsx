@@ -1,7 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  currentIndex: 0,
+  currentIndex: 4,
+  maxLength: 5,
 };
 
 const resumeStepperSlice = createSlice({

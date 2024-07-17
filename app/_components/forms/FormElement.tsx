@@ -7,6 +7,7 @@ export default function FormElement({
   type,
   register,
   required,
+  styles,
 }: {
   name: string;
   label: string;
@@ -14,9 +15,10 @@ export default function FormElement({
   type: string;
   register: any;
   required: boolean;
+  styles?: any;
 }) {
   return (
-    <div className="mb-4">
+    <div className="mb-4" style={{ ...styles }}>
       <label
         htmlFor={name}
         className="block text-sm font-medium text-gray-700 mb-1"

@@ -11,7 +11,7 @@ export default function Experience({ color }: { color: string }) {
         <li className="flex border-l-2 px-3">
           <div className=""></div>
           <div>
-            <h4>2014-2015</h4>
+            <h4 className="text-[11ppx]">2014-2015</h4>
             <p className="text-[10px]  text-slate-700">
               Enligence Technologies labs llp | Bhimavaram
             </p>

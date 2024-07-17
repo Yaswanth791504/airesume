@@ -6,6 +6,7 @@ import FormsLayout from "./Formslayout";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { increment } from "@/app/_context/resumeStepperSlice";
+import ResumeNextButton from "../ResumeNextButton";
 
 export default function PersonalDetails() {
   const {
@@ -20,12 +21,12 @@ export default function PersonalDetails() {
   const [summaryWords, setSummaryWords] = useState(0);
   const dispatch = useDispatch();
 
-  const hadnelNext = () => {
+  const handleNext = () => {
     dispatch(increment());
   };
 
   return (
-    <FormsLayout name="Personal Details">
+    <FormsLayout name="Personal Info">
       <div className="flex flex-1 p-10">
         <form onSubmit={handleSubmit(onSubmit)} className="w-full">
           <div className="grid grid-cols-2 gap-6">
@@ -94,14 +95,7 @@ export default function PersonalDetails() {
           </div>
 
           <div className="flex justify-end mt-6">
-            <button
-              onClick={hadnelNext}
-              type="submit"
-              className="bg-[#942d2c] text-white px-6 py-2 rounded-md disabled:opacity-50"
-              disabled={!isValid}
-            >
-              Next
-            </button>
+            <ResumeNextButton isValid={isValid} />
           </div>
         </form>
       </div>

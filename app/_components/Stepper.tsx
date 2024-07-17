@@ -3,7 +3,6 @@ import Box from "@mui/material/Box";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
-import Typography from "@mui/material/Typography";
 import { useSelector } from "react-redux";
 import { MdDone } from "react-icons/md";
 
@@ -29,7 +28,7 @@ const CustomStepIcon = (props: any) => {
   };
 
   if (completed) {
-    iconStyles.backgroundColor = color;
+    iconStyles.backgroundColor = "black";
     iconStyles.color = "white";
   }
 
@@ -39,30 +38,33 @@ const CustomStepIcon = (props: any) => {
 };
 
 export default function VerticalStepper() {
-  const activeStep =
-    2 || useSelector((state: any) => state.resumeStepper.currentIndex);
+  const { currentIndex: activeStep, maxLength } = useSelector(
+    (state: any) => state.resumeStepper
+  );
   const color = useSelector((state: any) => state.resume.themeColor);
 
   return (
     <Box sx={{ width: "100%" }}>
       <Stepper orientation="vertical" activeStep={activeStep}>
-        {Array.from({ length: 7 }, (x: number) => x + 1).map((label, index) => (
-          <Step key={label}>
-            <StepLabel
-              StepIconComponent={() => (
-                <CustomStepIcon
-                  active={activeStep}
-                  current={index}
-                  icon={index + 1}
-                  completed={index < activeStep}
-                  color={color}
-                />
-              )}
-            >
-              {label}
-            </StepLabel>
-          </Step>
-        ))}
+        {Array.from({ length: maxLength }, (x: number) => x + 1).map(
+          (label, index) => (
+            <Step key={label}>
+              <StepLabel
+                StepIconComponent={() => (
+                  <CustomStepIcon
+                    active={activeStep}
+                    current={index}
+                    icon={index + 1}
+                    completed={index < activeStep}
+                    color={color}
+                  />
+                )}
+              >
+                {label}
+              </StepLabel>
+            </Step>
+          )
+        )}
       </Stepper>
     </Box>
   );
