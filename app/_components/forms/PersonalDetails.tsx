@@ -9,7 +9,6 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   updateFirstName,
   updateLastName,
-  updatePersonaleDetails,
 } from "@/app/_context/resumeSlice";
 import { increment } from "@/app/_context/resumeStepperSlice";
 
