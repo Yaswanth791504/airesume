@@ -1,4 +1,10 @@
+"use client";
+
+import { useSelector } from "react-redux";
+
 export default function Contact() {
+  const resume = useSelector((state: any) => state.resume.resume);
+  console.log(resume);
   return (
     <div className="w-full h-fit pl-3">
       <h1 className="text-white  text-[13px] border-b-2 border-white font-semibold tracking-wide">

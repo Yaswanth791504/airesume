@@ -3,9 +3,6 @@
 import { useForm } from "react-hook-form";
 import FormsLayout from "./Formslayout";
 import FormElement from "./FormElement";
-import { useDispatch } from "react-redux";
-import { decrement, increment } from "@/app/_context/resumeStepperSlice";
-import { IoMdArrowRoundBack } from "react-icons/io";
 import ResumeNextButton from "../ResumeNextButton";
 import ResumeBackButton from "../ResumeBackButton";
 
@@ -18,14 +15,7 @@ export default function ContactDetails() {
   const onSubmit = (data: any) => {
     console.log(data);
   };
-  const dispatch = useDispatch();
-  const handleNext = () => {
-    dispatch(increment());
-  };
-
-  const handelPrevious = () => {
-    dispatch(decrement());
-  };
+  
 
   return (
     <FormsLayout name="Contact">
@@ -96,7 +86,7 @@ export default function ContactDetails() {
 
           <div className="flex justify-end mt-6 gap-3">
             <ResumeBackButton />
-            <ResumeNextButton isValid={isValid} />
+            <ResumeNextButton isValid={isValid} onSubmit={onSubmit} />
           </div>
         </form>
       </div>
