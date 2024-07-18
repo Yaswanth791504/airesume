@@ -1,9 +1,6 @@
-import { Metadata } from "next";
+"use client";
 
-export const metadata: Metadata = {
-  title: "Resume Builder",
-  description: "Build your resume with",
-};
+import HorizontalLinearStepper from "@/app/_components/Stepper";
 
 export default function Layout({
   editor,
@@ -14,8 +11,8 @@ export default function Layout({
 }) {
   return (
     <div className="flex flex-row h-screen">
-      <div className="w-15 flex flex-col justify-center align-middle px-2 bg-[#a12027] ">
-        notifications
+      <div className="w-15 flex flex-col justify-center align-middle px-4 bg-[#a12027] ">
+        <HorizontalLinearStepper />
       </div>
       <div className="flex-1">{editor}</div>
       <div className="flex-1">{preview}</div>
