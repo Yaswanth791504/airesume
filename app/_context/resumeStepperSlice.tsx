@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  currentIndex: 0,
+  currentIndex: 2,
   maxLength: 5,
 };
 

@@ -45,9 +45,6 @@ const initialState = {
   skills: [] as Skill[],
   languages: [] as Language[],
   image: "",
-  state: "",
-  country: "",
-  pinCode: "",
 };
 
 const resumeSlice = createSlice({
@@ -58,6 +55,7 @@ const resumeSlice = createSlice({
       state.themeColor = action.payload;
     },
     addEducation(state, action) {
+      console.log(state.educations.toString());
       state.educations.push({
         id: action.payload.id,
         institute: "",
@@ -66,7 +64,17 @@ const resumeSlice = createSlice({
       });
     },
     updateEducation(state, action) {
-      state.educations[action.payload.index] = action.payload.education;
+      console.log("from education slice");
+      console.log(action.payload);
+      const education = state.educations.find(
+        (education) => education.id === action.payload.id
+      );
+      if (education) {
+        education.institute = action.payload.institute;
+        education.degree = action.payload.degree;
+        education.completionYear = action.payload.completionYear;
+      }
+      console.log(state.educations);
     },
     removeEducation(state, action) {
       console.log(action.payload);
@@ -134,11 +142,29 @@ const resumeSlice = createSlice({
         (achievement) => achievement !== action.payload
       );
     },
-    updateFirstName(state, action) {
-      state.name = action.payload;
+    updatePersonalDetails(state, action) {
+      const captialize = (word: string) =>
+        word.charAt(0).toUpperCase() + word.slice(1);
+      state.name =
+        captialize(action.payload.firstName) +
+        " " +
+        captialize(action.payload.lastName);
+      state.role = action.payload.role
+        .split(" ")
+        .map((word: string) => captialize(word))
+        .join(" ");
+      state.about = action.payload.summary;
     },
-    updateLastName(state, action) {
-      state.name = state.name + " " + action.payload;
+    updateContactDetails(state, action) {
+      state.phone = action.payload.phone;
+      state.email = action.payload.email;
+      state.address = [
+        action.payload.street,
+        action.payload.city,
+        action.payload.state,
+        action.payload.pincode,
+      ].join(", ");
+      console.log(state.address);
     },
   },
 });
@@ -160,8 +186,8 @@ export const {
   addAcheivements,
   updateAchievements,
   removeAchievements,
-  updateFirstName,
-  updateLastName,
+  updatePersonalDetails,
+  updateContactDetails,
 } = resumeSlice.actions;
 
 export default resumeSlice.reducer;

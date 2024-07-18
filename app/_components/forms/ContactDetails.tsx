@@ -5,17 +5,33 @@ import FormsLayout from "./Formslayout";
 import FormElement from "./FormElement";
 import ResumeNextButton from "../ResumeNextButton";
 import ResumeBackButton from "../ResumeBackButton";
+import { useDispatch, useSelector } from "react-redux";
+import { updateContactDetails } from "@/app/_context/resumeSlice";
+import { increment } from "@/app/_context/resumeStepperSlice";
 
 export default function ContactDetails() {
+  const { phone, email, address } = useSelector((state: any) => state.resume);
+  const [street, city, state, pincode] = address.split(", ");
   const {
     register,
     handleSubmit,
     formState: { errors, isValid },
-  } = useForm({ mode: "onChange" });
+  } = useForm({
+    mode: "onChange",
+    defaultValues: {
+      phone,
+      email,
+      street,
+      city,
+      state,
+      pincode,
+    },
+  });
+  const dispatch = useDispatch();
   const onSubmit = (data: any) => {
-    console.log(data);
+    dispatch(updateContactDetails(data));
+    dispatch(increment());
   };
-  
 
   return (
     <FormsLayout name="Contact">

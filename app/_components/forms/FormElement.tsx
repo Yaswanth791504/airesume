@@ -30,7 +30,7 @@ export default function FormElement({
         {label}
       </label>
       <input
-        onChange={onChange}
+        // onChange={onChange}
         type={type}
         name={name}
         id={name}

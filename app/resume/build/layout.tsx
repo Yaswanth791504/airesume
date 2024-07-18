@@ -1,6 +1,7 @@
 "use client";
 
 import HorizontalLinearStepper from "@/app/_components/Stepper";
+import useConfirmReload from "@/app/hooks/useConformReload";
 
 export default function Layout({
   editor,
@@ -9,6 +10,7 @@ export default function Layout({
   editor?: React.ReactNode;
   preview?: React.ReactNode;
 }) {
+  useConfirmReload("Are you sure you want to leave this page?");
   return (
     <div className="flex flex-row h-screen">
       <div className="w-15 flex flex-col justify-center align-middle px-4 bg-[#a12027] ">

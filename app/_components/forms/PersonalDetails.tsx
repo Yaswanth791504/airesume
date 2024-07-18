@@ -6,31 +6,30 @@ import FormsLayout from "./Formslayout";
 import { useState } from "react";
 import ResumeNextButton from "../ResumeNextButton";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  updateFirstName,
-  updateLastName,
-} from "@/app/_context/resumeSlice";
 import { increment } from "@/app/_context/resumeStepperSlice";
+import { updatePersonalDetails } from "@/app/_context/resumeSlice";
 
 export default function PersonalDetails() {
+  const { name, role, about } = useSelector((state: any) => state.resume);
   const {
     register,
     handleSubmit,
     formState: { errors, isValid },
-  } = useForm({ mode: "onChange" });
+  } = useForm({
+    mode: "onChange",
+    defaultValues: {
+      firstName: name.split(" ")[0],
+      lastName: name.split(" ")[1],
+      role: role,
+      summary: about,
+    },
+  });
   const dispatch = useDispatch();
-  const { name, role, about } = useSelector((state: any) => state.resume);
 
   const onSubmit = (data: any) => {
-    console.log(data);
-    // setup firebase to save
+    dispatch(updatePersonalDetails(data));
     dispatch(increment());
   };
-
-  const onFirstNameChange = (e: any) =>
-    dispatch(updateFirstName(e.target.value));
-  const onLastNameChange = (e: any) => dispatch(updateLastName(e.target.value));
-
   const [summaryWords, setSummaryWords] = useState(0);
 
   return (
@@ -46,8 +45,6 @@ export default function PersonalDetails() {
                 type="text"
                 register={register}
                 required
-                value={name.split(" ")[0]}
-                onChange={onFirstNameChange}
               />
             </div>
             <div className="col-span-1">
@@ -59,7 +56,6 @@ export default function PersonalDetails() {
                 register={register}
                 required
                 value={name.split(" ")[1]}
-                onChange={onLastNameChange}
               />
             </div>
             <div className="col-span-2">

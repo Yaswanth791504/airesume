@@ -9,11 +9,16 @@ import { useForm } from "react-hook-form";
 import ResumeNextButton from "../ResumeNextButton";
 import ResumeBackButton from "../ResumeBackButton";
 import { MdDelete } from "react-icons/md";
-import { addEducation, removeEducation } from "@/app/_context/resumeSlice";
+import {
+  addEducation,
+  removeEducation,
+  updateEducation,
+} from "@/app/_context/resumeSlice";
 
 export default function EducationDetails() {
   const dispatch = useDispatch();
   const educations = useSelector((state: any) => state.resume.educations);
+
   const {
     register,
     handleSubmit,
@@ -28,9 +33,9 @@ export default function EducationDetails() {
     dispatch(addEducation({ id: Math.floor(Math.random() * 1000) }));
   };
 
-  const removeExtraEducation = (id: number) => {
-    console.log(id);
-    dispatch(removeEducation(id));
+  const updateEducationOnSave = (data: any) => {
+    console.log(data);
+    dispatch(updateEducation(data));
   };
 
   return (
@@ -45,10 +50,9 @@ export default function EducationDetails() {
               return (
                 <EducationComponent
                   key={education.id}
-                  errors={errors}
-                  register={register}
                   id={education.id}
-                  removeExtraEducation={removeExtraEducation}
+                  education={education}
+                  updateOnSave={updateEducationOnSave}
                 />
               );
             })
@@ -77,65 +81,89 @@ export default function EducationDetails() {
 }
 
 const EducationComponent = ({
-  errors,
-  register,
+  updateOnSave,
+  education,
   id,
-  removeExtraEducation,
 }: {
-  errors: any;
-  register: any;
+  updateOnSave: any;
   id: number;
-  removeExtraEducation: any;
+  education: any;
 }) => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+  } = useForm({
+    mode: "onChange",
+    defaultValues: {
+      [`degree_${id}`]: education.degree,
+      [`completionYear_${id}`]: education.completionYear,
+      [`college_${id}`]: education.institute,
+    },
+  });
+  const onSubmit = (data: any) => {
+    console.log(data);
+    dispatch(updateEducation({ id, ...data }));
+  };
+  const dispatch = useDispatch();
+  const removeExtraEducation = (id: number) => {
+    console.log(id);
+    dispatch(removeEducation(id));
+  };
+
   return (
-    <div className="grid grid-cols-2 gap-x-6 gap-y-2 border-2 border-[#942d2c] rounded-md p-5">
-      <div className="col-span-1">
-        <FormElement
-          name={`degree_${id}`}
-          label="Degree"
-          error={errors}
-          type="text"
-          register={register}
-          required
-        />
-      </div>
-      <div className="col-span-1">
-        <FormElement
-          name={`completionYear_${id}`}
-          label="Completion Year"
-          error={errors}
-          type="number"
-          register={register}
-          required
-        />
-      </div>
-      <div className="col-span-2">
-        <FormElement
-          name={`college_${id}`}
-          label="College / University"
-          error={errors}
-          type="text"
-          register={register}
-          required
-        />
-      </div>
-      <div className="flex flex-1 justify-between col-span-2">
-        <button onClick={() => removeExtraEducation(id)} type="button">
-          <MdDelete
-            style={{
-              color: "#942d2c",
-              width: "20px",
-              height: "20px",
-            }}
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <div className="grid grid-cols-2 gap-x-6 gap-y-2 border-2 border-[#942d2c] rounded-md p-5">
+        <div className="col-span-1">
+          <FormElement
+            name={`degree_${id}`}
+            label="Degree"
+            error={errors}
+            type="text"
+            register={register}
+            required
           />
-        </button>
-        <button
-          type="button"
-          className="bg-transparent text-[#942d2c] flex gap-1 items-center px-3 py-1 rounded-md border-2 border-[#942d2c]"
-        >
-          Save
-        </button>
+        </div>
+        <div className="col-span-1">
+          <FormElement
+            name={`completionYear_${id}`}
+            label="Completion Year"
+            error={errors}
+            type="number"
+            register={register}
+            required
+          />
+        </div>
+        <div className="col-span-2">
+          <FormElement
+            name={`college_${id}`}
+            label="College / University"
+            error={errors}
+            type="text"
+            register={register}
+            required
+          />
+        </div>
+        <div className="flex flex-1 justify-between col-span-2">
+          <button onClick={() => removeExtraEducation(id)} type="button">
+            <MdDelete
+              style={{
+                color: "#942d2c",
+                width: "20px",
+                height: "20px",
+              }}
+            />
+          </button>
+          <button
+            onClick={updateOnSave}
+            type="button"
+            disabled={!isValid}
+            className="bg-transparent text-[#942d2c] flex gap-1 items-center px-3 py-1 rounded-md border-2 border-[#942d2c]"
+          >
+            Save
+          </button>
+        </div>
       </div>
-    </div>
+    </form>
   );
 };
