@@ -5,7 +5,6 @@ import ResumeImage from "./../../../../public/resume.png";
 
 import { FaPaintBrush } from "react-icons/fa";
 import ThemeColors from "@/app/_components/ThemeColors";
-import { useState } from "react";
 import Contact from "@/app/_components/Contact";
 import Education from "@/app/_components/Education";
 import Expertise from "@/app/_components/Expertise";

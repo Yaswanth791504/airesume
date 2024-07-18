@@ -4,6 +4,7 @@ interface Education {
   id: number;
   institute: string;
   degree: string;
+  completionYear: number;
 }
 
 interface Experience {
@@ -61,6 +62,7 @@ const resumeSlice = createSlice({
         id: action.payload.id,
         institute: "",
         degree: "",
+        completionYear: 0,
       });
     },
     updateEducation(state, action) {
@@ -132,6 +134,12 @@ const resumeSlice = createSlice({
         (achievement) => achievement !== action.payload
       );
     },
+    updateFirstName(state, action) {
+      state.name = action.payload;
+    },
+    updateLastName(state, action) {
+      state.name = state.name + " " + action.payload;
+    },
   },
 });
 
@@ -152,6 +160,8 @@ export const {
   addAcheivements,
   updateAchievements,
   removeAchievements,
+  updateFirstName,
+  updateLastName,
 } = resumeSlice.actions;
 
 export default resumeSlice.reducer;

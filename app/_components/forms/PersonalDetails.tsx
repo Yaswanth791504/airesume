@@ -4,9 +4,14 @@ import { useForm } from "react-hook-form";
 import FormElement from "./FormElement";
 import FormsLayout from "./Formslayout";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { increment } from "@/app/_context/resumeStepperSlice";
 import ResumeNextButton from "../ResumeNextButton";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  updateFirstName,
+  updateLastName,
+  updatePersonaleDetails,
+} from "@/app/_context/resumeSlice";
+import { increment } from "@/app/_context/resumeStepperSlice";
 
 export default function PersonalDetails() {
   const {
@@ -14,16 +19,20 @@ export default function PersonalDetails() {
     handleSubmit,
     formState: { errors, isValid },
   } = useForm({ mode: "onChange" });
+  const dispatch = useDispatch();
+  const { name, role, about } = useSelector((state: any) => state.resume);
+
   const onSubmit = (data: any) => {
     console.log(data);
-  };
-
-  const [summaryWords, setSummaryWords] = useState(0);
-  const dispatch = useDispatch();
-
-  const handleNext = () => {
+    // setup firebase to save
     dispatch(increment());
   };
+
+  const onFirstNameChange = (e: any) =>
+    dispatch(updateFirstName(e.target.value));
+  const onLastNameChange = (e: any) => dispatch(updateLastName(e.target.value));
+
+  const [summaryWords, setSummaryWords] = useState(0);
 
   return (
     <FormsLayout name="Personal Info">
@@ -38,6 +47,8 @@ export default function PersonalDetails() {
                 type="text"
                 register={register}
                 required
+                value={name.split(" ")[0]}
+                onChange={onFirstNameChange}
               />
             </div>
             <div className="col-span-1">
@@ -48,6 +59,8 @@ export default function PersonalDetails() {
                 type="text"
                 register={register}
                 required
+                value={name.split(" ")[1]}
+                onChange={onLastNameChange}
               />
             </div>
             <div className="col-span-2">
