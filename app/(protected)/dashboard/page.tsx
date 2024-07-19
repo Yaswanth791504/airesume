@@ -1,5 +1,5 @@
-import NewResume from "../_components/NewResume";
-import PreviousResumes from "../_components/PreviousResumes";
+import NewResume from "../../_components/NewResume";
+import PreviousResumes from "../../_components/PreviousResumes";
 
 export default function Page() {
   return (

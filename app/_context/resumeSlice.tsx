@@ -107,9 +107,16 @@ const resumeSlice = createSlice({
       });
     },
     updateSkill(state, action) {
-      state.skills[action.payload.index] = action.payload.skill;
+      for (let doc of action.payload) {
+        const { id, skill } = doc;
+        const exiSkill = state.skills.find((skills) => +skills.id === +id);
+        if (exiSkill) {
+          exiSkill.skill = skill;
+        }
+      }
     },
     removeSkill(state, action) {
+      console.log(state.skills);
       state.skills = state.skills.filter(
         (skills) => skills.id !== action.payload
       );

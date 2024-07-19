@@ -7,8 +7,9 @@ import ResumeNextButton from "../ResumeNextButton";
 import FormElement from "./FormElement";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
-import { addSkill, removeSkill } from "@/app/_context/resumeSlice";
+import { addSkill, removeSkill, updateSkill } from "@/app/_context/resumeSlice";
 import { MdDelete } from "react-icons/md";
+import { useEffect } from "react";
 
 export default function ExperiseDetails() {
   const dispatch = useDispatch();
@@ -16,10 +17,20 @@ export default function ExperiseDetails() {
     register,
     handleSubmit,
     formState: { errors, isValid },
+    unregister,
   } = useForm({ mode: "onChange" });
+
   const onSubmit = (data: any) => {
-    console.log(data);
+    const skills = Object.keys(data).map((key) => {
+      return {
+        id: +key.split("_")[1],
+        skill: data[key],
+      };
+    });
+    console.log(skills);
+    dispatch(updateSkill(skills));
   };
+
   const skills = useSelector((state: any) => state.resume.skills);
 
   const handleAddSkill = () => {
@@ -27,8 +38,21 @@ export default function ExperiseDetails() {
   };
 
   const handleRemoveSkill = (id: number) => {
+    unregister(`skill_${id}`);
     dispatch(removeSkill(id));
   };
+
+  useEffect(() => {
+    skills.forEach((skill: any) => {
+      register(`skill_${skill.id}`, { required: true });
+    });
+
+    return () => {
+      skills.forEach((skill: any) => {
+        unregister(`skill_${skill.id}`);
+      });
+    };
+  }, [skills, register, unregister]);
 
   return (
     <FormsLayout name="Skills">
@@ -63,7 +87,10 @@ export default function ExperiseDetails() {
           </div>
           <div className="flex justify-end gap-3">
             <ResumeBackButton />
-            <ResumeNextButton isValid={isValid && skills.length > 0} />
+            <ResumeNextButton
+              isValid={isValid && skills.length > 0}
+              onSubmit={handleSubmit(onSubmit)}
+            />
           </div>
         </div>
       </div>

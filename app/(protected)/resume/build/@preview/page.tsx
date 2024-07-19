@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import ResumeImage from "./../../../../public/resume.png";
+import ResumeImage from "./../../../../../public/resume.png";
 
 import { FaPaintBrush } from "react-icons/fa";
 import ThemeColors from "@/app/_components/ThemeColors";
