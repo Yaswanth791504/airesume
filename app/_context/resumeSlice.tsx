@@ -116,11 +116,11 @@ const resumeSlice = createSlice({
       }
     },
     removeSkill(state, action) {
-      console.log(state.skills);
       state.skills = state.skills.filter(
         (skills) => skills.id !== action.payload
       );
     },
+
     addLanguage(state, action) {
       state.languages.push({
         id: action.payload.id,
@@ -137,16 +137,24 @@ const resumeSlice = createSlice({
     },
     addAcheivements(state, action) {
       state.achievements.push({
-        id: action.payload.id,
-        title: action.payload.title,
+        id: action.payload,
+        title: "",
       });
     },
     updateAchievements(state, action) {
-      state.achievements[action.payload.index] = action.payload.achievement;
+      for (let doc of action.payload) {
+        const { id, title } = doc;
+        const exiAchievement = state.achievements.find(
+          (achievement) => +achievement.id === +id
+        );
+        if (exiAchievement) {
+          exiAchievement.title = title;
+        }
+      }
     },
     removeAchievements(state, action) {
       state.achievements = state.achievements.filter(
-        (achievement) => achievement !== action.payload
+        (achievement) => achievement.id !== action.payload
       );
     },
     updatePersonalDetails(state, action) {

@@ -9,7 +9,7 @@ export default function FormElement({
   required,
   styles,
   value,
-  onChange,
+  defaultValue,
 }: {
   name: string;
   label: string;
@@ -19,7 +19,7 @@ export default function FormElement({
   required: boolean;
   styles?: any;
   value?: string;
-  onChange?: any;
+  defaultValue?: string;
 }) {
   return (
     <div className="mb-4" style={{ ...styles }}>
@@ -30,11 +30,11 @@ export default function FormElement({
         {label}
       </label>
       <input
-        // onChange={onChange}
         type={type}
         name={name}
         id={name}
         value={value}
+        defaultValue={defaultValue}
         {...register(name, { required })}
         className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-[#942d2c] focus:border-[#942d2c] sm:text-sm"
       />
