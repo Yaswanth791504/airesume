@@ -11,7 +11,7 @@ export default function Info({ color }: { color: string }) {
   return (
     <div className="h-fit w-full flex flex-col gap-3" style={{ color }}>
       <div>
-        <h1 className={`text-xl tracking-wider  ${roboto.className}`}>
+        <h1 className={`text-2xl tracking-wider  ${roboto.className}`}>
           {name}
         </h1>
         <h3 className="tracking-widest">{role}</h3>

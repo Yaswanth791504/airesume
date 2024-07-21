@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Outfit } from "next/font/google";
 import ProviderWrapper from "./ProviderWrapper";
+import "./firebase/firebaseCalls";
 
 const outfit = Outfit({ subsets: ["latin", "latin-ext"] });
 

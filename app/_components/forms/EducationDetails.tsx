@@ -1,5 +1,6 @@
 "use client";
 
+import { increment } from "@/app/_context/resumeStepperSlice";
 import React from "react";
 import FormElement from "./FormElement";
 import FormsLayout from "./Formslayout";
@@ -33,10 +34,9 @@ export default function EducationDetails() {
     dispatch(addEducation({ id: Math.floor(Math.random() * 1000) }));
   };
 
-  const updateEducationOnSave = (data: any) => {
-    console.log(data);
-    dispatch(updateEducation(data));
-  };
+  const allEducationsSaved = educations.every(
+    (education: any) => education.degree !== ""
+  );
 
   return (
     <FormsLayout name="Education">
@@ -46,16 +46,13 @@ export default function EducationDetails() {
           className="flex flex-1 flex-col gap-2"
         >
           {educations && educations.length > 0 ? (
-            educations.map((education: any) => {
-              return (
-                <EducationComponent
-                  key={education.id}
-                  id={education.id}
-                  education={education}
-                  updateOnSave={updateEducationOnSave}
-                />
-              );
-            })
+            educations.map((education: any) => (
+              <EducationComponent
+                key={education.id}
+                id={education.id}
+                education={education}
+              />
+            ))
           ) : (
             <div className="text-center p-10">
               You need to add at least one education
@@ -72,20 +69,20 @@ export default function EducationDetails() {
           </button>
           <div className="flex justify-end gap-3">
             <ResumeBackButton />
-            <ResumeNextButton isValid={isValid && educations.length > 0} />
+            <ResumeNextButton
+              isValid={isValid && educations.length > 0 && allEducationsSaved}
+              onSubmit={() => dispatch(increment())}
+            />
           </div>
         </div>
       </div>
     </FormsLayout>
   );
 }
-
 const EducationComponent = ({
-  updateOnSave,
   education,
   id,
 }: {
-  updateOnSave: any;
   id: number;
   education: any;
 }) => {
@@ -101,69 +98,73 @@ const EducationComponent = ({
       [`college_${id}`]: education.institute,
     },
   });
-  const onSubmit = (data: any) => {
-    console.log(data);
-    dispatch(updateEducation({ id, ...data }));
-  };
   const dispatch = useDispatch();
+
+  const onSubmit = (data: any) => {
+    const updatedEducation = {
+      id,
+      degree: data[`degree_${id}`],
+      completionYear: data[`completionYear_${id}`],
+      institute: data[`college_${id}`],
+    };
+    dispatch(updateEducation(updatedEducation));
+  };
+
   const removeExtraEducation = (id: number) => {
-    console.log(id);
     dispatch(removeEducation(id));
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="grid grid-cols-2 gap-x-6 gap-y-2 border-2 border-[#942d2c] rounded-md p-5">
-        <div className="col-span-1">
-          <FormElement
-            name={`degree_${id}`}
-            label="Degree"
-            error={errors}
-            type="text"
-            register={register}
-            required
-          />
-        </div>
-        <div className="col-span-1">
-          <FormElement
-            name={`completionYear_${id}`}
-            label="Completion Year"
-            error={errors}
-            type="number"
-            register={register}
-            required
-          />
-        </div>
-        <div className="col-span-2">
-          <FormElement
-            name={`college_${id}`}
-            label="College / University"
-            error={errors}
-            type="text"
-            register={register}
-            required
-          />
-        </div>
-        <div className="flex flex-1 justify-between col-span-2">
-          <button onClick={() => removeExtraEducation(id)} type="button">
-            <MdDelete
-              style={{
-                color: "#942d2c",
-                width: "20px",
-                height: "20px",
-              }}
-            />
-          </button>
-          <button
-            onClick={updateOnSave}
-            type="button"
-            disabled={!isValid}
-            className="bg-transparent text-[#942d2c] flex gap-1 items-center px-3 py-1 rounded-md border-2 border-[#942d2c]"
-          >
-            Save
-          </button>
-        </div>
+    <div className="grid grid-cols-2 gap-x-6 gap-y-2 border-2 border-[#942d2c] rounded-md p-5">
+      <div className="col-span-1">
+        <FormElement
+          name={`degree_${id}`}
+          label="Degree"
+          error={errors}
+          type="text"
+          register={register}
+          required
+        />
       </div>
-    </form>
+      <div className="col-span-1">
+        <FormElement
+          name={`completionYear_${id}`}
+          label="Completion Year"
+          error={errors}
+          type="number"
+          register={register}
+          required
+        />
+      </div>
+      <div className="col-span-2">
+        <FormElement
+          name={`college_${id}`}
+          label="College / University"
+          error={errors}
+          type="text"
+          register={register}
+          required
+        />
+      </div>
+      <div className="flex flex-1 justify-between col-span-2">
+        <button onClick={() => removeExtraEducation(id)} type="button">
+          <MdDelete
+            style={{
+              color: "#942d2c",
+              width: "20px",
+              height: "20px",
+            }}
+          />
+        </button>
+        <button
+          type="button"
+          onClick={handleSubmit(onSubmit)}
+          disabled={!isValid}
+          className="bg-transparent text-[#942d2c] flex gap-1 items-center px-3 py-1 rounded-md border-2 border-[#942d2c]"
+        >
+          Save
+        </button>
+      </div>
+    </div>
   );
 };

@@ -1,5 +1,6 @@
 "use client";
 
+import AllSet from "@/app/_components/AllSet";
 import AchievementDetails from "@/app/_components/forms/AchievementsDetails";
 import ContactDetails from "@/app/_components/forms/ContactDetails";
 import EducationDetails from "@/app/_components/forms/EducationDetails";
@@ -20,6 +21,7 @@ export default function Page() {
     <ExperienceDetails key="experience" />,
     <ExpertiseDetails key="expertise" />,
     <AchievementDetails key="achievement" />,
+    <AllSet key="allset" />,
   ];
 
   return <div className="w-full">{forms[currentStepperState]}</div>;

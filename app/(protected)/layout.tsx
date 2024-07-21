@@ -27,5 +27,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     return <Loading />;
   }
 
+  console.log(user);
+
   return <>{children}</>;
 }

@@ -32,6 +32,7 @@ interface Achievement {
 }
 
 const initialState = {
+  resumeName: "",
   name: "",
   role: "",
   about: "",
@@ -55,7 +56,6 @@ const resumeSlice = createSlice({
       state.themeColor = action.payload;
     },
     addEducation(state, action) {
-      console.log(state.educations.toString());
       state.educations.push({
         id: action.payload.id,
         institute: "",
@@ -93,7 +93,16 @@ const resumeSlice = createSlice({
       });
     },
     updateExperience(state, action) {
-      state.experience[action.payload.index] = action.payload.experience;
+      const experience = state.experience.find(
+        (experience) => experience.id === action.payload.id
+      );
+      if (experience) {
+        experience.companyName = action.payload.companyName;
+        experience.role = action.payload.role;
+        experience.startDate = action.payload.startDate;
+        experience.endDate = action.payload.endDate;
+        experience.description = action.payload.description;
+      }
     },
     removeExperience(state, action) {
       state.experience = state.experience.filter(
@@ -179,7 +188,15 @@ const resumeSlice = createSlice({
         action.payload.state,
         action.payload.pincode,
       ].join(", ");
-      console.log(state.address);
+    },
+    updateResumeName(state, action) {
+      state.resumeName = action.payload;
+    },
+    reset(state) {
+      return initialState;
+    },
+    updateTheWholeResume(state, action) {
+      return action.payload;
     },
   },
 });
@@ -203,6 +220,9 @@ export const {
   removeAchievements,
   updatePersonalDetails,
   updateContactDetails,
+  updateResumeName,
+  reset,
+  updateTheWholeResume,
 } = resumeSlice.actions;
 
 export default resumeSlice.reducer;

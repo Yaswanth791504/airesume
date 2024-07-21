@@ -102,7 +102,10 @@ export default function ContactDetails() {
 
           <div className="flex justify-end mt-6 gap-3">
             <ResumeBackButton />
-            <ResumeNextButton isValid={isValid} onSubmit={onSubmit} />
+            <ResumeNextButton
+              isValid={isValid}
+              onSubmit={handleSubmit(onSubmit)}
+            />
           </div>
         </form>
       </div>
