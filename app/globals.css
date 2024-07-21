@@ -13,3 +13,39 @@
     scrollbar-width: none; /* Firefox */
   }
 }
+
+/* globals.css */
+@media print {
+  .no-print {
+    display: none;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+  }
+
+  .print-container {
+    width: 210mm; /* A4 width */
+    height: 297mm;
+    margin: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    position: absolute;
+    box-sizing: border-box;
+    background: white;
+  }
+
+  .single-page {
+    page-break-inside: avoid;
+    /* Adjust this if content is still overflowing */
+  }
+
+  @page {
+    size: auto;
+    margin: 0;
+  }
+}

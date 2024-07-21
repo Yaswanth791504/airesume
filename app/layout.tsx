@@ -18,7 +18,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={outfit.className}>
-      <body>
+      <body
+        style={{
+          margin: 0,
+          padding: 0,
+          boxSizing: "border-box",
+        }}
+      >
         <ProviderWrapper>{children}</ProviderWrapper>
       </body>
     </html>

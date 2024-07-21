@@ -31,7 +31,7 @@ export default function Page({ params }: { params: { resumeId: string } }) {
 
   return (
     <div className="p-10 flex flex-col gap-10 items-center">
-      <div className="w-[60%] flex flex-col gap-4 print:hidden">
+      <div className="w-[60%] flex flex-col gap-4 print:hidden no-print">
         <h1 className="text-4xl font-bold text-[#942d2c] text-center">Ready</h1>
         <div className="flex flex-row justify-between">
           <button
