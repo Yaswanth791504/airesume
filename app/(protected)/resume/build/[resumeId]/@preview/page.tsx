@@ -4,7 +4,7 @@ import { FaPaintBrush } from "react-icons/fa";
 import ThemeColors from "@/app/_components/ThemeColors";
 import { useDispatch, useSelector } from "react-redux";
 import { updateThemeColor } from "@/app/_context/resumeSlice";
-import PreviewComponent from "@/app/_components/previewComponent";
+import PreviewComponent from "@/app/_components/PreviewComponent";
 
 export default function Page() {
   const color = useSelector((state: any) => state.resume.themeColor);

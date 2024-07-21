@@ -1,5 +1,5 @@
 "use client";
-import PreviewComponent from "@/app/_components/previewComponent";
+import PreviewComponent from "@/app/_components/PreviewComponent";
 import { updateTheWholeResume } from "@/app/_context/resumeSlice";
 import { auth } from "@/app/firebase/config";
 import { useEffect } from "react";

@@ -7,6 +7,8 @@ import {
   deleteDoc,
   getDoc,
 } from "firebase/firestore";
+import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
+import { storage } from "./config";
 
 const addUser = async (uid: string, email: string) => {
   try {
@@ -92,6 +94,13 @@ const getResume = async (uid: string, resumeId: string) => {
   }
 };
 
+const uploadImage = async (file: any) => {
+  const storageRef = ref(storage, "images/" + file.name + Date.now());
+  const snapshot = await uploadBytesResumable(storageRef, file);
+  console.log("Uploaded a blob or file!", snapshot);
+  return getDownloadURL(storageRef);
+};
+
 export {
   addUser,
   addResume,
@@ -99,4 +108,5 @@ export {
   deleteResume,
   updateResumeIntoFirebase,
   getResume,
+  uploadImage,
 };

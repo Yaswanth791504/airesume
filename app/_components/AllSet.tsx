@@ -30,7 +30,7 @@ export default function AllSet() {
 
   useEffect(() => {
     if (!loadingAuth && !user) {
-      router.replace("/login"); // Redirect to login if not authenticated
+      router.replace("/login");
     }
   }, [user, loadingAuth, router]);
 
@@ -53,7 +53,7 @@ export default function AllSet() {
         updatedResume
       );
       dispatch(reset());
-      router.replace("/dashboard");
+      router.push("/resume/preview/" + resumeId);
     } catch (error) {
       console.error("Failed to update resume:", error);
     } finally {

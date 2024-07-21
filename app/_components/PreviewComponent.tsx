@@ -8,15 +8,16 @@ import ResumeImage from "./../../public/resume.png";
 
 export default function PreviewComponent() {
   const color = useSelector((state: any) => state.resume.themeColor);
+  const image = useSelector((state: any) => state.resume.image);
   return (
-    <div className="h-full w-full shadow-[0_7px_29px_0px_rgba(100,100,111,0.2)]  flex items-start bg-white  ">
+    <div className="h-full w-full shadow-[0_7px_29px_0px_rgba(100,100,111,0.2)] flex items-start bg-white">
       <div
         className="w-40 h-full flex items-center justify-start py-5 flex-col gap-3"
         style={{ backgroundColor: color }}
       >
-        <div className="w-24 h-24 rounded-full overflow-hidden bg-green-100">
+        <div className="w-24 h-24 rounded-full overflow-hidden bg-green-100 flex items-center justify-center">
           <Image
-            src={ResumeImage}
+            src={image || ResumeImage}
             alt="resume_image"
             width={96}
             height={96}

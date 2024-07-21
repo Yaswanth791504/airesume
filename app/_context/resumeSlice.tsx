@@ -198,10 +198,14 @@ const resumeSlice = createSlice({
     updateTheWholeResume(state, action) {
       return action.payload;
     },
+    updateImage(state, action) {
+      state.image = action.payload;
+    },
   },
 });
 
 export const {
+  updateImage,
   updateThemeColor,
   addEducation,
   updateEducation,

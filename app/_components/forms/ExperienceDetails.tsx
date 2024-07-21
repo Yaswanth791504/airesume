@@ -1,5 +1,5 @@
 "use client";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import FormsLayout from "./Formslayout";
 import FormElement from "./FormElement";
 import { MdDelete } from "react-icons/md";
@@ -13,6 +13,10 @@ import { IoAddCircleOutline } from "react-icons/io5";
 import ResumeBackButton from "../ResumeBackButton";
 import ResumeNextButton from "../ResumeNextButton";
 import { increment } from "@/app/_context/resumeStepperSlice";
+import Image from "next/image";
+import Gemini from "./../../../public/gemini.svg";
+import { AiChatModel } from "./../../utils/genai";
+import { useState } from "react";
 
 export default function ExperienceDetails() {
   const {
@@ -40,7 +44,7 @@ export default function ExperienceDetails() {
 
   return (
     <FormsLayout name="Experience">
-      <div className="flex flex-1 p-10 gap-5 flex-col ">
+      <div className="flex flex-1 p-10 gap-5 flex-col">
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3">
           {experience && experience.length > 0 ? (
             experience.map((exp: any) => {
@@ -98,6 +102,8 @@ const ExperienceComponent = ({
   const {
     register,
     handleSubmit,
+    setValue,
+    getValues,
     formState: { errors, isValid },
   } = useForm({
     mode: "onChange",
@@ -109,6 +115,7 @@ const ExperienceComponent = ({
       [`description_${id}`]: experience.description,
     },
   });
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const onSubmit = (data: any) => {
     console.log(data);
@@ -121,6 +128,21 @@ const ExperienceComponent = ({
       description: data[`description_${id}`],
     };
     dispatch(updateExperience(updatedExperience));
+  };
+
+  const generateDescription = async () => {
+    setLoading(true);
+    const [companyName, role] = getValues([`companyName_${id}`, `role_${id}`]);
+    const message = `Generate a brief description for my role as a ${role} at ${companyName}. it should be concise and professional.`;
+    try {
+      const result = await AiChatModel.sendMessage(message);
+      const description = await result.response.text(); // Await the text extraction
+      setValue(`description_${id}`, description);
+    } catch (error) {
+      console.error("Error generating description:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -166,20 +188,32 @@ const ExperienceComponent = ({
             required
           />
         </div>
-        <div className="col-span-2">
-          <label
-            htmlFor="summary"
-            className=" text-sm font-medium text-gray-700 mb-1 flex gap-2"
-          >
-            Description
-          </label>
+        <div className="col-span-2 flex flex-col gap-3">
+          <div className="flex justify-between flex-row">
+            <label
+              htmlFor={`description_${id}`}
+              className="text-sm font-medium text-gray-700 mb-1 flex gap-2 justify-end items-end"
+            >
+              Description
+            </label>
+            <button
+              type="button"
+              onClick={generateDescription}
+              className="flex flex-row gap-2 bg-transparent text-[#942d2c] items-center px-3 py-1 rounded-md border-2 border-[#942d2c]"
+            >
+              Need Help
+              <Image src={Gemini} width={20} height={20} alt="Gemini" />
+            </button>
+          </div>
           <textarea
+            disabled={loading}
             id={`description_${id}`}
             {...register(`description_${id}`, {
-              required: true,
-              maxLength: {
-                value: 34,
-                message: "Description should be less than 34 words",
+              required: "Description is required",
+              validate: {
+                maxLength: (value) =>
+                  value.split(" ").length <= 34 ||
+                  "Description should be less than 34 words",
               },
             })}
             className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
